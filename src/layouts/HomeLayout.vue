@@ -16,7 +16,7 @@ import Sidebar from "@/templates/Sidebar/index.vue";
 </script>
 
 <style scoped lang="scss">
-$SIDEBAR_WIDTH: 240px;
+$SIDEBAR_WIDTH: 257px;
 $APP_BAR: 64px;
 
 .root {
