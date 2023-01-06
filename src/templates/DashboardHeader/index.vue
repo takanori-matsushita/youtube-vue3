@@ -1,6 +1,6 @@
 <template>
   <v-app-bar :elevation="0" class="between">
-    <div class="flex between w-100 items-center">
+    <div class="flex between w-100 items-center px-1">
       <div class="flex">
         <v-app-bar-nav-icon></v-app-bar-nav-icon>
         <div class="logo">

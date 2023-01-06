@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer width="240">
+  <v-navigation-drawer width="240" floating>
     <v-list nav>
       <v-list-item
         prepend-icon="mdi-home"

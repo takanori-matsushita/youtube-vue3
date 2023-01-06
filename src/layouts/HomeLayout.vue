@@ -16,7 +16,7 @@ import Sidebar from "@/templates/Sidebar/index.vue";
 </script>
 
 <style scoped lang="scss">
-$SIDEBAR_WIDTH: 257px;
+$SIDEBAR_WIDTH: 240px;
 $APP_BAR: 64px;
 
 .root {
@@ -26,7 +26,8 @@ $APP_BAR: 64px;
 
 .sidebar {
   padding-top: $APP_BAR;
-  width: $SIDEBAR_WIDTH;
+  width: 100%;
+  max-width: $SIDEBAR_WIDTH;
 }
 .main {
   padding-top: $APP_BAR + 30px;
