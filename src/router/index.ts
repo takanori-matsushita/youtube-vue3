@@ -2,6 +2,7 @@ import {createRouter, createWebHistory, RouteRecordRaw} from 'vue-router'
 import Home from '@/pages/Home.vue'
 import Watch from '@/pages/Watch/index.vue'
 import Upload from '@/pages/Upload/index.vue'
+import Login from '@/pages/Login/index.vue'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -39,7 +40,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/login',
     name: 'login',
-    component: Home,
+    component: Login,
   },
   {
     path: '/signup',

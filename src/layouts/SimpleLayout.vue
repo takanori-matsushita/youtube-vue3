@@ -1,10 +1,16 @@
 <template>
-  <div>
-    <h1>Simple</h1>
+  <div class="root">
     <slot />
   </div>
 </template>
 
 <script setup lang="ts"></script>
 
-<style scoped></style>
+<style scoped>
+.root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100%;
+}
+</style>
