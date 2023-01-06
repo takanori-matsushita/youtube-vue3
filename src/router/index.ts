@@ -1,5 +1,8 @@
 import {createRouter, createWebHistory, RouteRecordRaw} from 'vue-router'
 import Home from '@/pages/Home.vue'
+import Watch from '@/pages/Watch/index.vue'
+import Upload from '@/pages/Upload/index.vue'
+
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
@@ -15,15 +18,21 @@ const routes: RouteRecordRaw[] = [
     // ],
   },
   {
+    path: '/upload',
+    name: 'upload',
+    component: Upload,
+    meta: { layout: 'HomeLayout' },
+  },
+  {
     path: '/watch',
     name: 'watch.index',
-    component: Home,
+    component: Watch,
     meta: { layout: 'SideLessHomeLayout' },
     children: [
       {
         path: ':id',
         name: 'watch.show',
-        component: Home
+        component: Watch
       }
     ]
   },
