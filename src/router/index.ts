@@ -3,6 +3,7 @@ import Home from '@/pages/Home.vue'
 import Watch from '@/pages/Watch/index.vue'
 import Upload from '@/pages/Upload/index.vue'
 import Login from '@/pages/Login/index.vue'
+import Signup from '@/pages/Signup/index.vue'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -45,7 +46,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/signup',
     name: 'signup',
-    component: Home,
+    component: Signup,
   },
   {
     path: '/forget',
