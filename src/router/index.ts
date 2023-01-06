@@ -4,6 +4,7 @@ import Watch from '@/pages/Watch/index.vue'
 import Upload from '@/pages/Upload/index.vue'
 import Login from '@/pages/Login/index.vue'
 import Signup from '@/pages/Signup/index.vue'
+import ForgetPassForm from '@/pages/ForgetPassForm/index.vue'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -51,7 +52,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/forget',
     name: 'forget',
-    component: Home,
+    component: ForgetPassForm,
   },
   {
     path: '/:pathMatch(.*)*',
