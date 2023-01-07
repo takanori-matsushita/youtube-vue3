@@ -4,7 +4,9 @@
       <div class="flex">
         <v-app-bar-nav-icon></v-app-bar-nav-icon>
         <div class="logo">
-          <Logo />
+          <router-link to="/">
+            <Logo />
+          </router-link>
         </div>
       </div>
       <!-- <div> -->

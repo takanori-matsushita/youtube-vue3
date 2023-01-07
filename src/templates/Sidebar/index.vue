@@ -5,6 +5,8 @@
         prepend-icon="mdi-home"
         title="ホーム"
         value="home"
+        tag="router-link"
+        to="/"
       ></v-list-item>
       <v-list-item
         prepend-icon="mdi-fire"
@@ -20,27 +22,6 @@
   </v-navigation-drawer>
 </template>
 
-<script setup lang="ts">
-import { ref } from "vue";
-const drawer = ref(true);
-const items = [
-  {
-    title: "Foo",
-    value: "foo",
-  },
-  {
-    title: "Bar",
-    value: "bar",
-  },
-  {
-    title: "Fizz",
-    value: "fizz",
-  },
-  {
-    title: "Buzz",
-    value: "buzz",
-  },
-];
-</script>
+<script setup lang="ts"></script>
 
 <style lang="scss" scoped></style>
