@@ -20,7 +20,7 @@ const config: CodegenConfig = {
         "typescript-vue-apollo"
       ],
       config: {
-        withCompositionFunctions: true
+        useTypeImports: true,
       },
     },
   },
