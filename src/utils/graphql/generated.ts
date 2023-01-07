@@ -373,6 +373,7 @@ export type Timestamptz_Comparison_Exp = {
 export type Users = {
   __typename?: 'users';
   created_at: Scalars['timestamptz'];
+  email: Scalars['String'];
   id: Scalars['String'];
   name: Scalars['String'];
   profile_photo_url?: Maybe<Scalars['String']>;
@@ -407,6 +408,7 @@ export type Users_Bool_Exp = {
   _not?: InputMaybe<Users_Bool_Exp>;
   _or?: InputMaybe<Array<Users_Bool_Exp>>;
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  email?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<String_Comparison_Exp>;
   name?: InputMaybe<String_Comparison_Exp>;
   profile_photo_url?: InputMaybe<String_Comparison_Exp>;
@@ -422,6 +424,7 @@ export enum Users_Constraint {
 /** input type for inserting data into table "users" */
 export type Users_Insert_Input = {
   created_at?: InputMaybe<Scalars['timestamptz']>;
+  email?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
   profile_photo_url?: InputMaybe<Scalars['String']>;
@@ -432,6 +435,7 @@ export type Users_Insert_Input = {
 export type Users_Max_Fields = {
   __typename?: 'users_max_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
+  email?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   profile_photo_url?: Maybe<Scalars['String']>;
@@ -442,6 +446,7 @@ export type Users_Max_Fields = {
 export type Users_Min_Fields = {
   __typename?: 'users_min_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
+  email?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   profile_photo_url?: Maybe<Scalars['String']>;
@@ -467,6 +472,7 @@ export type Users_On_Conflict = {
 /** Ordering options when selecting data from "users". */
 export type Users_Order_By = {
   created_at?: InputMaybe<Order_By>;
+  email?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
   profile_photo_url?: InputMaybe<Order_By>;
@@ -483,6 +489,8 @@ export enum Users_Select_Column {
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
+  Email = 'email',
+  /** column name */
   Id = 'id',
   /** column name */
   Name = 'name',
@@ -495,6 +503,7 @@ export enum Users_Select_Column {
 /** input type for updating data in table "users" */
 export type Users_Set_Input = {
   created_at?: InputMaybe<Scalars['timestamptz']>;
+  email?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
   profile_photo_url?: InputMaybe<Scalars['String']>;
@@ -512,6 +521,7 @@ export type Users_Stream_Cursor_Input = {
 /** Initial value of the column from where the streaming should start */
 export type Users_Stream_Cursor_Value_Input = {
   created_at?: InputMaybe<Scalars['timestamptz']>;
+  email?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
   profile_photo_url?: InputMaybe<Scalars['String']>;
@@ -522,6 +532,8 @@ export type Users_Stream_Cursor_Value_Input = {
 export enum Users_Update_Column {
   /** column name */
   CreatedAt = 'created_at',
+  /** column name */
+  Email = 'email',
   /** column name */
   Id = 'id',
   /** column name */
@@ -830,24 +842,28 @@ export type Videos_Variance_Fields = {
 export type InsertUserMutationVariables = Exact<{
   id: Scalars['String'];
   name: Scalars['String'];
+  email: Scalars['String'];
 }>;
 
 
-export type InsertUserMutation = { __typename?: 'mutation_root', insert_users_one?: { __typename?: 'users', id: string, name: string, profile_photo_url?: string | null, created_at: any, updated_at: any } | null };
+export type InsertUserMutation = { __typename?: 'mutation_root', insert_users_one?: { __typename?: 'users', id: string, name: string, email: string, profile_photo_url?: string | null, created_at: any, updated_at: any } | null };
 
 export type UserByIdQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
 
 
-export type UserByIdQuery = { __typename?: 'query_root', users_by_pk?: { __typename?: 'users', id: string, name: string, profile_photo_url?: string | null, updated_at: any, created_at: any } | null };
+export type UserByIdQuery = { __typename?: 'query_root', users_by_pk?: { __typename?: 'users', id: string, name: string, email: string, profile_photo_url?: string | null, updated_at: any, created_at: any } | null };
 
 
 export const InsertUserDocument = gql`
-    mutation InsertUser($id: String!, $name: String!) {
-  insert_users_one(object: {id: $id, name: $name, profile_photo_url: ""}) {
+    mutation InsertUser($id: String!, $name: String!, $email: String!) {
+  insert_users_one(
+    object: {id: $id, name: $name, email: $email, profile_photo_url: ""}
+  ) {
     id
     name
+    email
     profile_photo_url
     created_at
     updated_at
@@ -870,6 +886,7 @@ export const InsertUserDocument = gql`
  *   variables: {
  *     id: // value for 'id'
  *     name: // value for 'name'
+ *     email: // value for 'email'
  *   },
  * });
  */
@@ -882,6 +899,7 @@ export const UserByIdDocument = gql`
   users_by_pk(id: $id) {
     id
     name
+    email
     profile_photo_url
     updated_at
     created_at
