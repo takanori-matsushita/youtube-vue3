@@ -3,8 +3,8 @@ import VideoCard from "@/components/VideoCard.vue";
 </script>
 
 <template>
-  <v-container>
-    <v-row no-gutters>
+  <v-container fluid>
+    <v-row>
       <v-col v-for="i in 5" :key="i" cols="3">
         <VideoCard />
       </v-col>
