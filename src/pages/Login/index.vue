@@ -1,5 +1,15 @@
 <script setup lang="ts">
-import Logo from "@/components/Logo.vue";
+import { reactive } from "vue";
+import Logo from "@/components/Logo.vue"
+import { useLogin } from "@/composables/useLogin"
+import { FireSignupType } from "@/utils/Firebase/signup"
+
+const loginProps = reactive({
+  email: "",
+  password: "",
+})
+
+const { error, loading, login } = useLogin(loginProps)
 </script>
 
 <template>
@@ -10,23 +20,47 @@ import Logo from "@/components/Logo.vue";
       </div>
       <v-card-title tag="h1" class="margin">ログイン</v-card-title>
       <v-card-text>
-        <v-form>
-          <v-text-field label="メールアドレス" class="margin"></v-text-field>
+        <p v-if="error.has('main')" class="margin">{{ error.get("main") }}</p>
+        <v-form @submit.prevent="login">
           <v-text-field
+            variant="underlined"
+            label="メールアドレス"
+            class="margin"
+            v-model="loginProps.email"
+            :error="error.has('email')"
+            :errorMessages="error.has('email') ? error.get('email') : ''"
+          ></v-text-field>
+          <v-text-field
+            variant="underlined"
             label="パスワード"
             type="password"
             class="margin"
+            v-model="loginProps.password"
+            :error="error.has('password')"
+            :errorMessages="error.has('password') ? error.get('password') : ''"
           ></v-text-field>
           <div class="margin">
-            <v-btn color="primary">ログイン</v-btn>
+            <v-btn color="primary" type="submit" :disabled="loading">
+              {{ loading ? "ログイン中" : "ログイン" }}
+            </v-btn>
           </div>
           <div>
-            <v-btn variant="text" color="primary">
+            <v-btn
+              tag="router-link"
+              :to="{name: 'signup'}"
+              variant="text"
+              color="primary"
+            >
               アカウント作成はこちら
             </v-btn>
           </div>
           <div>
-            <v-btn variant="text" color="primary">
+            <v-btn
+              tag="router-link"
+              :to="{name: 'forget'}"
+              variant="text"
+              color="primary"
+            >
               パスワードを忘れた場合はこちら
             </v-btn>
           </div>
