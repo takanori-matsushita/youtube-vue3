@@ -1,7 +1,7 @@
 import { useRouter } from "vue-router"
 import { FireSignupType } from "@/utils/Firebase/signup"
 import { login as fireLogin } from "@/utils/Firebase/login"
-import { SetErrorFn, useAuthHelper } from "../useAuthHelper"
+import { SetErrorFn, useAuthHelper } from "@/composables/Authentication/useAuthHelper"
 import { provideApolloClient, apolloClient } from "@/plugins/apolloClient"
 
 provideApolloClient(apolloClient)

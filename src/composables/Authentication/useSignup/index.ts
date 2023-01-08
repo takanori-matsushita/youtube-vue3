@@ -2,7 +2,7 @@ import { watch } from "vue"
 import { useRouter } from "vue-router"
 import { FireSignupType, signup as fireSignup } from "@/utils/Firebase/signup"
 import { useInsertUserMutation } from "@/utils/graphql/generated"
-import { SetErrorFn, useAuthHelper } from "../useAuthHelper"
+import { SetErrorFn, useAuthHelper } from "@/composables/Authentication/useAuthHelper"
 import { provideApolloClient, apolloClient } from "@/plugins/apolloClient"
 
 provideApolloClient(apolloClient)

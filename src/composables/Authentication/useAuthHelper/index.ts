@@ -47,7 +47,30 @@ export const useAuthHelper = (
       await executeProcess();
     } catch (error : any) {
       // エラーがあれば、エラーをセットして処理を中断
-      setErrorHandler("main", error.message);
+      let message = ""
+      switch (error.code) {
+        case "auth/invalid-email":
+          message = "メールアドレスの形式が正しくありません。"
+          break;
+        case "auth/user-disabled":
+          message = "無効なユーザーです。"
+          break;
+        case "auth/user-not-found":
+        case "auth/wrong-password":
+          message = "メールアドレスもしくはパスワードが一致しません。"
+          break;
+        case "auth/too-many-requests":
+          message = "規定の認証上限の回数をオーバーしました。"
+          break;
+        case "auth/weak-password":
+          message = "パスワードは6文字以上に設定してください。"
+          break;
+        default:
+          console.error(error.code)
+          message = "サーバーエラーが発生しました。時間をおいて再度お試しください。"
+          break;
+      }
+      setErrorHandler("main", message);
     } finally {
       // 処理が終了したら、ローディングはfalse
       loading.value = false
