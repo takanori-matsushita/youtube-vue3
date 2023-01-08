@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { reactive } from "vue";
 import Logo from "@/components/Logo.vue"
-import { useLogin } from "@/composables/useLogin"
+import { useLogin } from "@/composables/Authentication/useLogin"
 import { FireSignupType } from "@/utils/Firebase/signup"
 
-const loginProps = reactive({
+const loginProps = reactive<FireSignupType>({
   email: "",
   password: "",
 })
@@ -20,7 +20,7 @@ const { error, loading, login } = useLogin(loginProps)
       </div>
       <v-card-title tag="h1" class="margin">ログイン</v-card-title>
       <v-card-text>
-        <p v-if="error.has('main')" class="margin">{{ error.get("main") }}</p>
+        <p v-if="error.has('main')" class="margin text-red">{{ error.get("main") }}</p>
         <v-form @submit.prevent="login">
           <v-text-field
             variant="underlined"

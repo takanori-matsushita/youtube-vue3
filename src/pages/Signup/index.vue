@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive } from "vue";
 import Logo from "@/components/Logo.vue";
-import { useSignup, SignupPropsType } from "@/composables/useSignup";
+import { useSignup, SignupPropsType } from "@/composables/Authentication/useSignup";
 
 const signupProps = reactive<SignupPropsType>({
   name: "",
@@ -20,7 +20,7 @@ const { error, loading, signup } = useSignup(signupProps);
       </div>
       <v-card-title tag="h1" class="margin">新規アカウント登録</v-card-title>
       <v-card-text>
-        <p v-if="error.has('main')" class="margin">{{ error.get("main") }}</p>
+        <p v-if="error.has('main')" class="margin text-red">{{ error.get("main") }}</p>
         <v-form @submit.prevent="signup">
           <v-text-field
             variant="underlined"
