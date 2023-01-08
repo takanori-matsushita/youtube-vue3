@@ -1,5 +1,15 @@
 <script setup lang="ts">
+import { reactive } from "vue";
 import Logo from "@/components/Logo.vue";
+import { useSignup, SignupPropsType } from "@/composables/useSignup";
+
+const signupProps = reactive<SignupPropsType>({
+  name: "",
+  email: "",
+  password: "",
+})
+
+const { error, loading, signup } = useSignup(signupProps);
 </script>
 
 <template>
@@ -10,19 +20,47 @@ import Logo from "@/components/Logo.vue";
       </div>
       <v-card-title tag="h1" class="margin">新規アカウント登録</v-card-title>
       <v-card-text>
-        <v-form>
-          <v-text-field label="名前" class="margin"></v-text-field>
-          <v-text-field label="メールアドレス" class="margin"></v-text-field>
+        <p v-if="error.has('main')" class="margin">{{ error.get("main") }}</p>
+        <v-form @submit.prevent="signup">
           <v-text-field
+            variant="underlined"
+            label="名前"
+            class="margin"
+            v-model="signupProps.name"
+            :error="error.has('name')"
+            :errorMessages="error.has('name') ? error.get('name') : ''"
+          ></v-text-field>
+          <v-text-field
+            variant="underlined"
+            label="メールアドレス"
+            class="margin"
+            v-model="signupProps.email"
+            :error="error.has('email')"
+            :errorMessages="error.has('email') ? error.get('email') : ''"
+          ></v-text-field>
+          <v-text-field
+            variant="underlined"
             label="パスワード"
             type="password"
             class="margin"
+            v-model="signupProps.password"
+            :error="error.has('password')"
+            :errorMessages="error.has('password') ? error.get('password') : ''"
           ></v-text-field>
           <div class="margin">
-            <v-btn color="primary">新規作成</v-btn>
+            <v-btn color="primary" type="submit" :disabled="loading">
+              {{ loading ? "アカウント作成中" : "新規作成" }}
+            </v-btn>
           </div>
           <div>
-            <v-btn variant="text" color="primary">ログインはこちら</v-btn>
+            <v-btn
+              tag="router-link"
+              :to="{name: 'login'}"
+              variant="text" 
+              color="primary"
+            >
+              ログインはこちら
+            </v-btn>
           </div>
         </v-form>
       </v-card-text>
