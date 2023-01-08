@@ -23,3 +23,4 @@ export const apolloClient = new ApolloClient({
 })
 
 export { DefaultApolloClient } from "@vue/apollo-composable"
+export { provideApolloClient } from "@vue/apollo-composable"
