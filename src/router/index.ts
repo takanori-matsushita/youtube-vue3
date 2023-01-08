@@ -5,6 +5,7 @@ import Upload from '@/pages/Upload/index.vue'
 import Login from '@/pages/Login/index.vue'
 import Signup from '@/pages/Signup/index.vue'
 import ForgetPassForm from '@/pages/ForgetPassForm/index.vue'
+import Signout from '@/pages/Signout/index.vue'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -48,6 +49,11 @@ const routes: RouteRecordRaw[] = [
     path: '/signup',
     name: 'signup',
     component: Signup,
+  },
+  {
+    path: '/signout',
+    name: 'signout',
+    component: Signout,
   },
   {
     path: '/forget',
