@@ -1,9 +1,12 @@
 <template>
-  <Layout />
+  <AuthStateListener>
+    <Layout />
+  </AuthStateListener>
 </template>
 
 <script setup lang="ts">
-import Layout from "@/layouts/Layout.vue";
+import AuthStateListener from "@/providers/AuthStateListener/index.vue"
+import Layout from "@/layouts/Layout.vue"
 </script>
 
 <style>
