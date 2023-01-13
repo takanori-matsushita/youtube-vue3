@@ -9,16 +9,17 @@
           </router-link>
         </div>
       </div>
-      <!-- <div> -->
       <SearchBar />
-      <!-- </div> -->
       <div class="flex">
+        <template v-if="user.id">
         <v-btn icon>
           <v-icon icon="mdi-video-plus"></v-icon>
         </v-btn>
         <v-btn icon>
           <v-icon icon="mdi-account-circle" color="" size="x-large"></v-icon>
         </v-btn>
+        </template>
+        <v-btn v-else color="primary" variant="outlined" tag="router-link" to="/login">ログイン</v-btn>
       </div>
     </div>
   </v-app-bar>
@@ -27,6 +28,10 @@
 <script setup lang="ts">
 import Logo from "@/components/Logo.vue";
 import SearchBar from "@/templates/DashboardHeader/SearchBar/index.vue";
+import { useAuth } from "@/stores/useAuth";
+import { storeToRefs } from "pinia";
+
+const { user } = storeToRefs(useAuth())
 </script>
 
 <style scoped>
