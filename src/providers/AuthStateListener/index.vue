@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { fireAuth } from "@/utils/Firebase/config"
 import { useAuth } from "@/stores/useAuth"
+import { onUnmounted } from "vue";
 
 const auth = useAuth()
 
@@ -12,7 +13,11 @@ const subscribe = () => {
   return unsubscriber;
 }
 
-subscribe()
+const unsubscribe = subscribe()
+
+onUnmounted(() => {
+  unsubscribe()
+})
 </script>
 
 <template>
