@@ -4,6 +4,7 @@ import { FireSignupType, signup as fireSignup } from "@/utils/Firebase/signup"
 import { useInsertUserMutation } from "@/utils/graphql/generated"
 import { SetErrorFn, useAuthHelper } from "@/composables/Authentication/useAuthHelper"
 import { provideApolloClient, apolloClient } from "@/plugins/apolloClient"
+import { useAuth } from '@/stores/useAuth'
 
 provideApolloClient(apolloClient)
 
@@ -14,6 +15,7 @@ export type SignupPropsType = {
 export const useSignup = (props: SignupPropsType) => {
 
   const router = useRouter()
+  const { setUserState } = useAuth()
 
   const formValidation = (setError: SetErrorFn) => {
     let invalidValidation = false;
@@ -64,7 +66,12 @@ export const useSignup = (props: SignupPropsType) => {
       }
     })
 
-    mutate()
+    const apolloResponse = await mutate()
+
+    if (apolloResponse?.data?.insert_users_one?.id) {
+      // GraphQLでデータが作成された後に確実にデータを格納する
+      setUserState(apolloResponse.data?.insert_users_one)
+    }
 
     if (!apolloError.value) {
       // `/`へリダイレクト
