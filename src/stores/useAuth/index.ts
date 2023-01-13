@@ -31,10 +31,6 @@ export const useAuth = defineStore("auth", () => {
     }
   })
 
-  watch(variables, () => {
-    console.log(variables)
-  })
-
   const {
     result: apolloResult,
     error: apolloError,
@@ -108,5 +104,5 @@ export const useAuth = defineStore("auth", () => {
     }
   })
 
-  return { user, credential, authCredentialLoaded, accountLoaded }
+  return { user, credential, authCredentialLoaded, accountLoaded, setUserState }
 })
