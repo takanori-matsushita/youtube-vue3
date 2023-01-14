@@ -5,6 +5,7 @@ import { useInsertUserMutation } from "@/utils/graphql/generated"
 import { SetErrorFn, useAuthHelper } from "@/composables/Authentication/useAuthHelper"
 import { provideApolloClient, apolloClient } from "@/plugins/apolloClient"
 import { useAuth } from '@/stores/useAuth'
+import { checkAuthToken } from "./checkAuthToken"
 
 provideApolloClient(apolloClient)
 
@@ -56,6 +57,9 @@ export const useSignup = (props: SignupPropsType) => {
     if (!user?.uid) {
       throw new Error("ユーザーの登録に失敗しました。");
     }
+
+    // アカウントにトークンが設定されるまで待機
+    await checkAuthToken(user.uid);
 
     // Hasuraにuserを作成する
     const { mutate, error: apolloError } = useInsertUserMutation({
