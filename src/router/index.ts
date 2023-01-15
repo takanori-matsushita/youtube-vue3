@@ -25,7 +25,7 @@ const routes: RouteRecordRaw[] = [
     path: '/upload',
     name: 'upload',
     component: Upload,
-    meta: { layout: 'HomeLayout' },
+    meta: { layout: 'HomeLayout', requiredAuth: true },
   },
   {
     path: '/watch',
