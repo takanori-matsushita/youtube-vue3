@@ -45,4 +45,8 @@ export const useAuth = defineStore("auth", () => {
   }
 
   return { user, credential, authCredentialLoaded, accountLoaded, setUserState }
-})
+},
+{
+  persist: true,
+}
+)

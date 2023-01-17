@@ -5,12 +5,15 @@ import { loadFonts } from './plugins/webfontloader'
 import router from './router'
 import { DefaultApolloClient, apolloClient } from '@/plugins/apolloClient'
 import { createPinia } from 'pinia'
-
+import { createPersistedState } from "pinia-plugin-persistedstate"
 loadFonts()
+
+const pinia = createPinia()
+pinia.use(createPersistedState())
 
 createApp(App)
   .use(vuetify)
   .use(router)
-  .use(createPinia())
+  .use(pinia)
   .provide(DefaultApolloClient, apolloClient)
   .mount('#app')
