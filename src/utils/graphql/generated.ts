@@ -547,6 +547,7 @@ export enum Users_Update_Column {
 export type Users_Updates = {
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<Users_Set_Input>;
+  /** filter the rows which have to be updated */
   where: Users_Bool_Exp;
 };
 
@@ -558,6 +559,7 @@ export type Videos = {
   duration: Scalars['Int'];
   id: Scalars['String'];
   owner_id: Scalars['String'];
+  thumbnail_url: Scalars['String'];
   title: Scalars['String'];
   updated_at: Scalars['timestamptz'];
   video_url: Scalars['String'];
@@ -611,6 +613,7 @@ export type Videos_Bool_Exp = {
   duration?: InputMaybe<Int_Comparison_Exp>;
   id?: InputMaybe<String_Comparison_Exp>;
   owner_id?: InputMaybe<String_Comparison_Exp>;
+  thumbnail_url?: InputMaybe<String_Comparison_Exp>;
   title?: InputMaybe<String_Comparison_Exp>;
   updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   video_url?: InputMaybe<String_Comparison_Exp>;
@@ -636,6 +639,7 @@ export type Videos_Insert_Input = {
   duration?: InputMaybe<Scalars['Int']>;
   id?: InputMaybe<Scalars['String']>;
   owner_id?: InputMaybe<Scalars['String']>;
+  thumbnail_url?: InputMaybe<Scalars['String']>;
   title?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['timestamptz']>;
   video_url?: InputMaybe<Scalars['String']>;
@@ -650,6 +654,7 @@ export type Videos_Max_Fields = {
   duration?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['String']>;
   owner_id?: Maybe<Scalars['String']>;
+  thumbnail_url?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
   video_url?: Maybe<Scalars['String']>;
@@ -664,6 +669,7 @@ export type Videos_Min_Fields = {
   duration?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['String']>;
   owner_id?: Maybe<Scalars['String']>;
+  thumbnail_url?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
   video_url?: Maybe<Scalars['String']>;
@@ -693,6 +699,7 @@ export type Videos_Order_By = {
   duration?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   owner_id?: InputMaybe<Order_By>;
+  thumbnail_url?: InputMaybe<Order_By>;
   title?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
   video_url?: InputMaybe<Order_By>;
@@ -717,6 +724,8 @@ export enum Videos_Select_Column {
   /** column name */
   OwnerId = 'owner_id',
   /** column name */
+  ThumbnailUrl = 'thumbnail_url',
+  /** column name */
   Title = 'title',
   /** column name */
   UpdatedAt = 'updated_at',
@@ -733,6 +742,7 @@ export type Videos_Set_Input = {
   duration?: InputMaybe<Scalars['Int']>;
   id?: InputMaybe<Scalars['String']>;
   owner_id?: InputMaybe<Scalars['String']>;
+  thumbnail_url?: InputMaybe<Scalars['String']>;
   title?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['timestamptz']>;
   video_url?: InputMaybe<Scalars['String']>;
@@ -775,6 +785,7 @@ export type Videos_Stream_Cursor_Value_Input = {
   duration?: InputMaybe<Scalars['Int']>;
   id?: InputMaybe<Scalars['String']>;
   owner_id?: InputMaybe<Scalars['String']>;
+  thumbnail_url?: InputMaybe<Scalars['String']>;
   title?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['timestamptz']>;
   video_url?: InputMaybe<Scalars['String']>;
@@ -801,6 +812,8 @@ export enum Videos_Update_Column {
   /** column name */
   OwnerId = 'owner_id',
   /** column name */
+  ThumbnailUrl = 'thumbnail_url',
+  /** column name */
   Title = 'title',
   /** column name */
   UpdatedAt = 'updated_at',
@@ -815,6 +828,7 @@ export type Videos_Updates = {
   _inc?: InputMaybe<Videos_Inc_Input>;
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<Videos_Set_Input>;
+  /** filter the rows which have to be updated */
   where: Videos_Bool_Exp;
 };
 
@@ -847,6 +861,18 @@ export type InsertUserMutationVariables = Exact<{
 
 
 export type InsertUserMutation = { __typename?: 'mutation_root', insert_users_one?: { __typename?: 'users', id: string, name: string, email: string, profile_photo_url?: string | null, created_at: any, updated_at: any } | null };
+
+export type InsertVideoMutationVariables = Exact<{
+  id: Scalars['String'];
+  title: Scalars['String'];
+  description?: InputMaybe<Scalars['String']>;
+  thumbnail_url: Scalars['String'];
+  video_url: Scalars['String'];
+  owner_id: Scalars['String'];
+}>;
+
+
+export type InsertVideoMutation = { __typename?: 'mutation_root', insert_videos_one?: { __typename?: 'videos', id: string, title: string, description: string, video_url: string, thumbnail_url: string, owner_id: string, duration: number, views: number, updated_at: any, created_at: any } | null };
 
 export type UserByIdQueryVariables = Exact<{
   id: Scalars['String'];
@@ -894,6 +920,51 @@ export function useInsertUserMutation(options: VueApolloComposable.UseMutationOp
   return VueApolloComposable.useMutation<InsertUserMutation, InsertUserMutationVariables>(InsertUserDocument, options);
 }
 export type InsertUserMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<InsertUserMutation, InsertUserMutationVariables>;
+export const InsertVideoDocument = gql`
+    mutation InsertVideo($id: String!, $title: String!, $description: String = "", $thumbnail_url: String!, $video_url: String!, $owner_id: String!) {
+  insert_videos_one(
+    object: {id: $id, title: $title, description: $description, video_url: $video_url, thumbnail_url: $thumbnail_url, owner_id: $owner_id, duration: 0, views: 0}
+  ) {
+    id
+    title
+    description
+    video_url
+    thumbnail_url
+    owner_id
+    duration
+    views
+    updated_at
+    created_at
+  }
+}
+    `;
+
+/**
+ * __useInsertVideoMutation__
+ *
+ * To run a mutation, you first call `useInsertVideoMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useInsertVideoMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useInsertVideoMutation({
+ *   variables: {
+ *     id: // value for 'id'
+ *     title: // value for 'title'
+ *     description: // value for 'description'
+ *     thumbnail_url: // value for 'thumbnail_url'
+ *     video_url: // value for 'video_url'
+ *     owner_id: // value for 'owner_id'
+ *   },
+ * });
+ */
+export function useInsertVideoMutation(options: VueApolloComposable.UseMutationOptions<InsertVideoMutation, InsertVideoMutationVariables> | ReactiveFunction<VueApolloComposable.UseMutationOptions<InsertVideoMutation, InsertVideoMutationVariables>>) {
+  return VueApolloComposable.useMutation<InsertVideoMutation, InsertVideoMutationVariables>(InsertVideoDocument, options);
+}
+export type InsertVideoMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<InsertVideoMutation, InsertVideoMutationVariables>;
 export const UserByIdDocument = gql`
     query UserById($id: String!) {
   users_by_pk(id: $id) {
