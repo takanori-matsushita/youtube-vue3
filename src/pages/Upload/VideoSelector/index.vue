@@ -1,5 +1,19 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { ref, watch, watchEffect } from "vue";
+
+interface Props {
+  videoFile: File | null
+  thumbFile: File | null
+}
+
+const props = defineProps<Props>()
+
+interface Emits {
+  (e: "update:videoFile", value: File): void
+  (e: "update:thumbFile", value: File): void
+}
+
+const emits = defineEmits<Emits>()
 
 const inputRef = ref<HTMLInputElement>();
 const handleClick = () => {
@@ -11,20 +25,23 @@ const file = ref<File>();
 const selectedFile = (event: Event) => {
   if (!(event.currentTarget instanceof HTMLInputElement)) return;
   if (event.currentTarget.files?.length) {
-    file.value = event.currentTarget.files[0];
+    emits("update:videoFile", event.currentTarget.files[0])
   }
 };
 
 const videoURL = ref<string>();
-watch(file, () => {
-  if (file.value) {
-    const videoUrl = URL.createObjectURL(file.value);
+watchEffect(() => {
+  if (props.videoFile) {
+    const videoUrl = URL.createObjectURL(props.videoFile);
     videoURL.value = videoUrl;
     createThumbnail(videoUrl);
   }
 });
-// サムネイルを生成する関数
+
 const thumbnailURLs = ref<string[]>([]);
+const selectThumbURL = ref<string>("");
+
+// サムネイルを生成する関数
 const createThumbnail = (videoRefURL: string) => {
   // サムネイル生成のための準備
   // canvasタグを使って、<video>のビューを転写する
@@ -62,6 +79,30 @@ const createThumbnail = (videoRefURL: string) => {
   video.src = videoRefURL;
   video.load();
 };
+
+// 追加
+  // サムネイルを選択して、
+  // 1. 参照URLを`selectThumbURL`に格納
+  // 2. 参照URLから画像ファイルを生成し、`setThumbFile`でファイルを親コンポーネントに渡す
+  const selectedThumb = (url: string) => {
+    //  参照URLを`selectThumbURL`に格納
+    selectThumbURL.value = url
+  // 参照URLから画像ファイルを生成し、`setThumbFile`でファイルを親コンポーネントに渡す
+    fetch(url)
+      .then((res) => {
+        return res.blob();
+      })
+      .then((blob) => {
+        const thumb = new File([blob], "thumb.jpeg");
+        emits("update:thumbFile", thumb)
+      });
+  };
+
+  watch(thumbnailURLs, () => {
+    if (thumbnailURLs.value.length && thumbnailURLs.value[0] !== selectThumbURL.value) {
+      selectedThumb(thumbnailURLs.value[0]);
+    }
+  })
 </script>
 
 <template>
@@ -71,7 +112,7 @@ const createThumbnail = (videoRefURL: string) => {
       <h2 class="text-padding">サムネイル</h2>
       <v-row class="thumbnail-content">
         <v-col v-for="url in thumbnailURLs">
-          <img :src="url" />
+          <img :src="url" @click="selectedThumb(url)" :class="[{ 'selected-thumb': url === selectThumbURL }, 'thumbnail']" />
         </v-col>
       </v-row>
     </div>
@@ -103,5 +144,11 @@ const createThumbnail = (videoRefURL: string) => {
 }
 .full {
   width: 100%;
+}
+.thumbnail {
+  cursor: pointer;
+}
+.selected-thumb {
+  border: 2px solid red;
 }
 </style>

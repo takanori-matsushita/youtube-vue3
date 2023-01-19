@@ -1,9 +1,19 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, reactive } from "vue";
 import VideoSelector from "./VideoSelector/index.vue";
 import UploadForm from "./UploadForm/index.vue";
 
 const dialog = ref(true);
+
+interface State  {
+  videoFile: File | null
+  thumbFile: File | null
+}
+
+const state: State = reactive({
+  videoFile: null,
+  thumbFile: null,
+})
 </script>
 
 <template>
@@ -22,11 +32,11 @@ const dialog = ref(true);
       <v-card-text>
         <v-row>
           <v-col>
-            <VideoSelector />
+            <VideoSelector v-model:video-file="state.videoFile" v-model:thumb-file="state.thumbFile" />
           </v-col>
           <v-divider vertical></v-divider>
           <v-col>
-            <UploadForm />
+            <UploadForm v-model:video-file="state.videoFile" v-model:thumb-file="state.thumbFile" />
           </v-col>
         </v-row>
       </v-card-text>
