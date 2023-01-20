@@ -881,6 +881,11 @@ export type UserByIdQueryVariables = Exact<{
 
 export type UserByIdQuery = { __typename?: 'query_root', users_by_pk?: { __typename?: 'users', id: string, name: string, email: string, profile_photo_url?: string | null, updated_at: any, created_at: any } | null };
 
+export type VideosQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type VideosQuery = { __typename?: 'query_root', videos: Array<{ __typename?: 'videos', id: string, owner_id: string, title: string, description: string, views: number, duration: number, video_url: string, thumbnail_url: string, created_at: any, updated_at: any }> };
+
 
 export const InsertUserDocument = gql`
     mutation InsertUser($id: String!, $name: String!, $email: String!) {
@@ -1000,3 +1005,39 @@ export function useUserByIdLazyQuery(variables: UserByIdQueryVariables | VueComp
   return VueApolloComposable.useLazyQuery<UserByIdQuery, UserByIdQueryVariables>(UserByIdDocument, variables, options);
 }
 export type UserByIdQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<UserByIdQuery, UserByIdQueryVariables>;
+export const VideosDocument = gql`
+    query Videos {
+  videos {
+    id
+    owner_id
+    title
+    description
+    views
+    duration
+    video_url
+    thumbnail_url
+    created_at
+    updated_at
+  }
+}
+    `;
+
+/**
+ * __useVideosQuery__
+ *
+ * To run a query within a Vue component, call `useVideosQuery` and pass it any options that fit your needs.
+ * When your component renders, `useVideosQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useVideosQuery();
+ */
+export function useVideosQuery(options: VueApolloComposable.UseQueryOptions<VideosQuery, VideosQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<VideosQuery, VideosQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<VideosQuery, VideosQueryVariables>> = {}) {
+  return VueApolloComposable.useQuery<VideosQuery, VideosQueryVariables>(VideosDocument, {}, options);
+}
+export function useVideosLazyQuery(options: VueApolloComposable.UseQueryOptions<VideosQuery, VideosQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<VideosQuery, VideosQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<VideosQuery, VideosQueryVariables>> = {}) {
+  return VueApolloComposable.useLazyQuery<VideosQuery, VideosQueryVariables>(VideosDocument, {}, options);
+}
+export type VideosQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<VideosQuery, VideosQueryVariables>;
