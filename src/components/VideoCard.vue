@@ -1,11 +1,38 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref } from 'vue';
+
+export type Owner = {
+  id: string
+  name: string
+  email: string
+  profile_photo_url: string
+  updated_at: Date
+  created_at: Date
+}
+
+export type VideoCardProps = {
+  fetcher: () => Promise<string | undefined>;
+  title: string;
+  owner: Owner;
+  views: number;
+  created: Date;
+}
+
+const props = defineProps<VideoCardProps>()
+
+const imgSrc = ref<string>("")
+
+props.fetcher().then((res) => {
+  imgSrc.value = res || ""
+})
+</script>
 
 <template>
   <v-card max-width="400" class="mx-auto">
     <v-img
       cover
       :aspect-ratio="16 / 9"
-      src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
+      :src="imgSrc || '/static/no-image.jpg'"
     ></v-img>
 
     <v-card-item style="align-items: start">
@@ -16,11 +43,13 @@
         ></v-avatar>
       </template>
       <v-card-title style="white-space: normal">
-        Organization Admin Settings: Dashboard overview [1/7]
+        {{ props.title }}
       </v-card-title>
 
       <v-card-subtitle>
-        <span class="mr-1">Figma 16K views 2 months ago</span>
+        <p class="mr-1">{{ props.owner.name }}</p>
+        <span class="mr-1">{{ props.views }}</span>
+        <span class="mr-1">{{ props.created ? new Date(props.created).toLocaleDateString() : "" }}</span>
       </v-card-subtitle>
     </v-card-item>
   </v-card>

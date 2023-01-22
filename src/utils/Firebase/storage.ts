@@ -8,7 +8,7 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
  */
 export const uploader = (path: string, file: File) => {
   const storageRef = ref(storage, path)
-  uploadBytes(storageRef, file)
+  return uploadBytes(storageRef, file)
 }
 
 /**
@@ -19,5 +19,5 @@ export const uploader = (path: string, file: File) => {
  */
 export const downloader = (path: string) => {
   const storageRef = ref(storage, path)
-  getDownloadURL(storageRef)
+  return getDownloadURL(storageRef)
 }
