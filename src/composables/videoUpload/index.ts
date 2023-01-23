@@ -1,10 +1,8 @@
 import { ref } from "vue"
-import { storage } from "@/utils/Firebase/config"
-import { ref as fileRef, uploadBytes } from "firebase/storage";
+import { uploader } from "@/utils/Firebase/storage";
 import { v4 as uuidv4 } from "uuid";
-import { useInsertVideoMutation } from "@/utils/graphql/generated";
+import { useInsertVideoMutation, VideosDocument } from "@/utils/graphql/generated";
 import { useAuth } from "@/stores/useAuth";
-import { storeToRefs } from "pinia";
 
 type UploadProps = {
   file: {
@@ -30,10 +28,9 @@ export const useVideoUpload = () => {
     //
     // putでファイルのアップロードを実際に行う
     // `ref`で指定したパスに対して、ファイルの実態をアップロードする
-    const storageRef = fileRef(storage, `${path}/${id}.${exe}`)
-    return uploadBytes(storageRef, file).then((snapshot) => {
+    return uploader(`${path}/${id}.${exe}`, file).then((snapshot) => {
       return snapshot
-    });
+    })
   }
 
   const upload = async ({ file, title, description, ownerId }: UploadProps) => {
@@ -77,6 +74,7 @@ export const useVideoUpload = () => {
           thumbnail_url: thumbnailUploadTask.ref.fullPath,
           owner_id: ownerId,
         },
+        refetchQueries: [{ query: VideosDocument }],
       })
 
       if(apolloError.value) {
