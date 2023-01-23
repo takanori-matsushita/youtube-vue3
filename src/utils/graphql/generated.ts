@@ -462,6 +462,13 @@ export type Users_Mutation_Response = {
   returning: Array<Users>;
 };
 
+/** input type for inserting object relation for remote table "users" */
+export type Users_Obj_Rel_Insert_Input = {
+  data: Users_Insert_Input;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Users_On_Conflict>;
+};
+
 /** on_conflict condition type for table "users" */
 export type Users_On_Conflict = {
   constraint: Users_Constraint;
@@ -558,6 +565,8 @@ export type Videos = {
   description: Scalars['String'];
   duration: Scalars['Int'];
   id: Scalars['String'];
+  /** An object relationship */
+  owner?: Maybe<Users>;
   owner_id: Scalars['String'];
   thumbnail_url: Scalars['String'];
   title: Scalars['String'];
@@ -612,6 +621,7 @@ export type Videos_Bool_Exp = {
   description?: InputMaybe<String_Comparison_Exp>;
   duration?: InputMaybe<Int_Comparison_Exp>;
   id?: InputMaybe<String_Comparison_Exp>;
+  owner?: InputMaybe<Users_Bool_Exp>;
   owner_id?: InputMaybe<String_Comparison_Exp>;
   thumbnail_url?: InputMaybe<String_Comparison_Exp>;
   title?: InputMaybe<String_Comparison_Exp>;
@@ -638,6 +648,7 @@ export type Videos_Insert_Input = {
   description?: InputMaybe<Scalars['String']>;
   duration?: InputMaybe<Scalars['Int']>;
   id?: InputMaybe<Scalars['String']>;
+  owner?: InputMaybe<Users_Obj_Rel_Insert_Input>;
   owner_id?: InputMaybe<Scalars['String']>;
   thumbnail_url?: InputMaybe<Scalars['String']>;
   title?: InputMaybe<Scalars['String']>;
@@ -698,6 +709,7 @@ export type Videos_Order_By = {
   description?: InputMaybe<Order_By>;
   duration?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  owner?: InputMaybe<Users_Order_By>;
   owner_id?: InputMaybe<Order_By>;
   thumbnail_url?: InputMaybe<Order_By>;
   title?: InputMaybe<Order_By>;
@@ -874,6 +886,13 @@ export type InsertVideoMutationVariables = Exact<{
 
 export type InsertVideoMutation = { __typename?: 'mutation_root', insert_videos_one?: { __typename?: 'videos', id: string, title: string, description: string, video_url: string, thumbnail_url: string, owner_id: string, duration: number, views: number, updated_at: any, created_at: any } | null };
 
+export type RecommendVideosQueryVariables = Exact<{
+  currentVideoId: Scalars['String'];
+}>;
+
+
+export type RecommendVideosQuery = { __typename?: 'query_root', videos: Array<{ __typename?: 'videos', id: string, title: string, description: string, thumbnail_url: string, video_url: string, views: number, duration: number, created_at: any, updated_at: any, owner?: { __typename?: 'users', id: string, name: string, profile_photo_url?: string | null, updated_at: any, email: string, created_at: any } | null }> };
+
 export type UserByIdQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
@@ -881,10 +900,17 @@ export type UserByIdQueryVariables = Exact<{
 
 export type UserByIdQuery = { __typename?: 'query_root', users_by_pk?: { __typename?: 'users', id: string, name: string, email: string, profile_photo_url?: string | null, updated_at: any, created_at: any } | null };
 
+export type VideoByPkQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type VideoByPkQuery = { __typename?: 'query_root', videos_by_pk?: { __typename?: 'videos', id: string, title: string, thumbnail_url: string, video_url: string, views: number, duration: number, description: string, updated_at: any, created_at: any, owner?: { __typename?: 'users', id: string, name: string, profile_photo_url?: string | null, email: string, updated_at: any, created_at: any } | null } | null };
+
 export type VideosQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type VideosQuery = { __typename?: 'query_root', videos: Array<{ __typename?: 'videos', id: string, owner_id: string, title: string, description: string, views: number, duration: number, video_url: string, thumbnail_url: string, created_at: any, updated_at: any }> };
+export type VideosQuery = { __typename?: 'query_root', videos: Array<{ __typename?: 'videos', id: string, title: string, description: string, views: number, duration: number, video_url: string, thumbnail_url: string, created_at: any, updated_at: any, owner?: { __typename?: 'users', id: string, email: string, name: string, profile_photo_url?: string | null, updated_at: any, created_at: any } | null }> };
 
 
 export const InsertUserDocument = gql`
@@ -970,6 +996,52 @@ export function useInsertVideoMutation(options: VueApolloComposable.UseMutationO
   return VueApolloComposable.useMutation<InsertVideoMutation, InsertVideoMutationVariables>(InsertVideoDocument, options);
 }
 export type InsertVideoMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<InsertVideoMutation, InsertVideoMutationVariables>;
+export const RecommendVideosDocument = gql`
+    query RecommendVideos($currentVideoId: String!) {
+  videos(where: {id: {_neq: $currentVideoId}}) {
+    id
+    title
+    description
+    thumbnail_url
+    video_url
+    views
+    duration
+    owner {
+      id
+      name
+      profile_photo_url
+      updated_at
+      email
+      created_at
+    }
+    created_at
+    updated_at
+  }
+}
+    `;
+
+/**
+ * __useRecommendVideosQuery__
+ *
+ * To run a query within a Vue component, call `useRecommendVideosQuery` and pass it any options that fit your needs.
+ * When your component renders, `useRecommendVideosQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param variables that will be passed into the query
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useRecommendVideosQuery({
+ *   currentVideoId: // value for 'currentVideoId'
+ * });
+ */
+export function useRecommendVideosQuery(variables: RecommendVideosQueryVariables | VueCompositionApi.Ref<RecommendVideosQueryVariables> | ReactiveFunction<RecommendVideosQueryVariables>, options: VueApolloComposable.UseQueryOptions<RecommendVideosQuery, RecommendVideosQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<RecommendVideosQuery, RecommendVideosQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<RecommendVideosQuery, RecommendVideosQueryVariables>> = {}) {
+  return VueApolloComposable.useQuery<RecommendVideosQuery, RecommendVideosQueryVariables>(RecommendVideosDocument, variables, options);
+}
+export function useRecommendVideosLazyQuery(variables: RecommendVideosQueryVariables | VueCompositionApi.Ref<RecommendVideosQueryVariables> | ReactiveFunction<RecommendVideosQueryVariables>, options: VueApolloComposable.UseQueryOptions<RecommendVideosQuery, RecommendVideosQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<RecommendVideosQuery, RecommendVideosQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<RecommendVideosQuery, RecommendVideosQueryVariables>> = {}) {
+  return VueApolloComposable.useLazyQuery<RecommendVideosQuery, RecommendVideosQueryVariables>(RecommendVideosDocument, variables, options);
+}
+export type RecommendVideosQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<RecommendVideosQuery, RecommendVideosQueryVariables>;
 export const UserByIdDocument = gql`
     query UserById($id: String!) {
   users_by_pk(id: $id) {
@@ -1005,11 +1077,56 @@ export function useUserByIdLazyQuery(variables: UserByIdQueryVariables | VueComp
   return VueApolloComposable.useLazyQuery<UserByIdQuery, UserByIdQueryVariables>(UserByIdDocument, variables, options);
 }
 export type UserByIdQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<UserByIdQuery, UserByIdQueryVariables>;
+export const VideoByPkDocument = gql`
+    query VideoByPk($id: String!) {
+  videos_by_pk(id: $id) {
+    id
+    title
+    thumbnail_url
+    video_url
+    views
+    duration
+    description
+    owner {
+      id
+      name
+      profile_photo_url
+      email
+      updated_at
+      created_at
+    }
+    updated_at
+    created_at
+  }
+}
+    `;
+
+/**
+ * __useVideoByPkQuery__
+ *
+ * To run a query within a Vue component, call `useVideoByPkQuery` and pass it any options that fit your needs.
+ * When your component renders, `useVideoByPkQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param variables that will be passed into the query
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useVideoByPkQuery({
+ *   id: // value for 'id'
+ * });
+ */
+export function useVideoByPkQuery(variables: VideoByPkQueryVariables | VueCompositionApi.Ref<VideoByPkQueryVariables> | ReactiveFunction<VideoByPkQueryVariables>, options: VueApolloComposable.UseQueryOptions<VideoByPkQuery, VideoByPkQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<VideoByPkQuery, VideoByPkQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<VideoByPkQuery, VideoByPkQueryVariables>> = {}) {
+  return VueApolloComposable.useQuery<VideoByPkQuery, VideoByPkQueryVariables>(VideoByPkDocument, variables, options);
+}
+export function useVideoByPkLazyQuery(variables: VideoByPkQueryVariables | VueCompositionApi.Ref<VideoByPkQueryVariables> | ReactiveFunction<VideoByPkQueryVariables>, options: VueApolloComposable.UseQueryOptions<VideoByPkQuery, VideoByPkQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<VideoByPkQuery, VideoByPkQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<VideoByPkQuery, VideoByPkQueryVariables>> = {}) {
+  return VueApolloComposable.useLazyQuery<VideoByPkQuery, VideoByPkQueryVariables>(VideoByPkDocument, variables, options);
+}
+export type VideoByPkQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<VideoByPkQuery, VideoByPkQueryVariables>;
 export const VideosDocument = gql`
     query Videos {
   videos {
     id
-    owner_id
     title
     description
     views
@@ -1018,6 +1135,14 @@ export const VideosDocument = gql`
     thumbnail_url
     created_at
     updated_at
+    owner {
+      id
+      email
+      name
+      profile_photo_url
+      updated_at
+      created_at
+    }
   }
 }
     `;
